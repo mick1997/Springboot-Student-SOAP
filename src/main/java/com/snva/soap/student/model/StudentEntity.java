@@ -6,20 +6,19 @@ import lombok.*;
 
 import java.io.Serializable;
 
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "student", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "email")
+        @UniqueConstraint(columnNames = {"email"})
 })
-public class StudentEntity implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class StudentEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long studentId;
     @Column(nullable = false)
     private String name;

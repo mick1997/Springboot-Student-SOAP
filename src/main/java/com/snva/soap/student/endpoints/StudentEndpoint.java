@@ -13,6 +13,7 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Endpoint
 public class StudentEndpoint {
@@ -64,14 +65,14 @@ public class StudentEndpoint {
         newStudentEntity.setCourse(request.getCourse());
         newStudentEntity.setIp(request.getIp());
         newStudentEntity.setContact(request.getContact());
-        StudentEntity savedStudentEntity = studentService.addStudent(newStudentEntity);
+        newStudentEntity = studentService.addStudent(newStudentEntity);
 
-        if (savedStudentEntity == null) {
+        if (newStudentEntity == null) {
             serviceStatus.setStatusCode("CONFLICT");
             serviceStatus.setMessage("Exception while adding Entity");
         }
         else {
-            BeanUtils.copyProperties(savedStudentEntity, newStudent);
+            BeanUtils.copyProperties(newStudentEntity, newStudent);
             serviceStatus.setStatusCode("SUCCESS");
             serviceStatus.setMessage("New Student added Successfully!!!");
         }
@@ -85,31 +86,31 @@ public class StudentEndpoint {
     public UpdateStudentResponse updateStudent(@RequestPayload UpdateStudentRequest request) {
         UpdateStudentResponse response = new UpdateStudentResponse();
         ServiceStatus serviceStatus = new ServiceStatus();
-        StudentEntity studentDB = studentService.getStudentByName(request.getName());
+        Optional<StudentEntity> studentDB = studentService.getStudentByName(request.getName());
 
         if (studentDB == null) {
             serviceStatus.setStatusCode("NOT FOUND");
             serviceStatus.setMessage("Student with named: " + request.getName() + " not found!!!");
         }
         else {
-            studentDB.setName(request.getName());
-            studentDB.setDob(request.getDob());
-            studentDB.setEmail(request.getEmail());
-            studentDB.setAddress(request.getAddress());
-            studentDB.setCourse(request.getCourse());
-            studentDB.setIp(request.getIp());
-            studentDB.setContact(request.getContact());
+//            studentDB.setName(request.getName());
+//            studentDB.setDob(request.getDob());
+//            studentDB.setEmail(request.getEmail());
+//            studentDB.setAddress(request.getAddress());
+//            studentDB.setCourse(request.getCourse());
+//            studentDB.setIp(request.getIp());
+//            studentDB.setContact(request.getContact());
+//
+//            boolean flag = studentService.updateStudent(studentDB);
 
-            boolean flag = studentService.updateStudent(studentDB);
-
-            if (!flag) {
-                serviceStatus.setStatusCode("CONFLICT");
-                serviceStatus.setMessage("Exception while adding Entity" + request.getName());
-            }
-            else {
-                serviceStatus.setStatusCode("SUCCESS");
-                serviceStatus.setMessage("Student updated Successfully!!!");
-            }
+//            if (!flag) {
+//                serviceStatus.setStatusCode("CONFLICT");
+//                serviceStatus.setMessage("Exception while adding Entity" + request.getName());
+//            }
+//            else {
+//                serviceStatus.setStatusCode("SUCCESS");
+//                serviceStatus.setMessage("Student updated Successfully!!!");
+//            }
         }
         response.setServiceStatus(serviceStatus);
         return response;

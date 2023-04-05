@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
 public class StudentServiceImpl implements IStudentService {
-
 
     @Autowired
     private StudentRepository studentRepository;
@@ -23,7 +23,7 @@ public class StudentServiceImpl implements IStudentService {
     }
 
     @Override
-    public StudentEntity getStudentByName(String name) {
+    public Optional<StudentEntity> getStudentByName(String name) {
         return studentRepository.findStudentByName(name);
     }
 
@@ -61,15 +61,16 @@ public class StudentServiceImpl implements IStudentService {
     }
 
     @Override
-    public boolean updateStudent(StudentEntity studentEntity) {
-        try {
-            studentRepository.save(studentEntity);
-            return true;
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+    public boolean updateStudent(Optional<StudentEntity> studentEntity) {
+        return true;
+//        try {
+//            studentRepository.save(studentEntity);
+//            return true;
+//        }
+//        catch (Exception e) {
+//            e.printStackTrace();
+//            return false;
+//        }
 //        StudentEntity stu = studentRepository.findStudentByName(studentEntity.getName());
 //        if (stu != null) {
 //            StudentEntity studentEntityRes = new StudentEntity();
